@@ -7,11 +7,9 @@ import { createBrotliCompress, createBrotliDecompress } from "node:zlib"
 import normalizePath from "../helpers/normalizePath.js";
 
 export class ZLibController {
-  #rl;
   #commands;
 
-  constructor(readline) {
-    this.#rl = readline;
+  constructor() {
     this.#commands = {
       "compress": this.#compress,
       "decompress": this.#decompress
@@ -77,13 +75,13 @@ export class ZLibController {
         if (Array.isArray(data)) {
           console.table(data);
         } else if (typeof data === "string") {
-          this.#rl.write(data + "\n\n");
+          console.log(data + "\n\n");
         }
       } catch (error) {
-        this.#rl.write('Operation failed\n');
+        console.log('Operation failed\n');
       }
     } else {
-      this.#rl.write('Invalid input\n');
+      console.log('Invalid input\n');
     }
   }
 }

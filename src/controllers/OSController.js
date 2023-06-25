@@ -2,11 +2,9 @@ import os from "node:os";
 
 class OSController {
 
-  #rl;
   #commands;
 
-  constructor(readline) {
-    this.#rl = readline;
+  constructor() {
     this.#commands = {
       "--EOL": this.#getEOL,
       "--cpus": this.#getCPUs,
@@ -48,7 +46,7 @@ class OSController {
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
       if (!this.#commands.hasOwnProperty(arg)) {
-        this.#rl.write("Invalid input \n");
+        console.log("Invalid input \n");
         return;
       }
 
@@ -58,10 +56,10 @@ class OSController {
         if (Array.isArray(data)) {
           console.table(data)
         } else {
-          this.#rl.write(data + '\n\n');
+          console.log(data + '\n\n');
         }
       } catch (error) {
-        this.#rl.write("Operation failed\n");
+        console.log("Operation failed\n");
       }
     }
   }

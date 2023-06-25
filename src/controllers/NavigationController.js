@@ -66,13 +66,13 @@ class NavigationController {
         if (Array.isArray(data)) {
           console.table(data);
         } else if (typeof data === "string") {
-          this.#rl.write(data + "\n\n");
+          console.log(data + "\n\n");
         }
       } catch (error) {
-        this.#rl.write('Operation failed\n');
+        console.log('Operation failed\n');
       }
     } else {
-      this.#rl.write('Invalid input\n');
+      console.log('Invalid input\n');
     }
   }
 
