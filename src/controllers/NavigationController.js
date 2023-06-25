@@ -2,6 +2,7 @@ import os from "node:os";
 import path from "node:path";
 import { chdir, cwd } from 'node:process';
 import fs from "node:fs/promises";
+import normalizePath from "../helpers/normalizePath.js";
 
 class NavigationController {
 
@@ -26,7 +27,7 @@ class NavigationController {
   }
 
   #cd = async (pathToDir) => {
-    const newPath = path.isAbsolute(pathToDir) ? path.normalize(pathToDir) : path.resolve(cwd(), pathToDir);
+    const newPath = normalizePath(pathToDir);
     chdir(newPath);
     this.#rl.setPrompt(`\nYou are currently in ${cwd()}\n`);
   }

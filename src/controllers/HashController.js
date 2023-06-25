@@ -2,7 +2,7 @@ import { cwd } from "node:process";
 import path from "node:path";
 import { createHash } from 'node:crypto';
 import { readFile } from "node:fs/promises";
-
+import normalizePath from "../helpers/normalizePath.js";
 class HashController {
 
   #rl;
@@ -16,7 +16,7 @@ class HashController {
   }
 
   #hashFile = async (pathToFile) => {
-    const targetPath = path.isAbsolute(pathToFile) ? path.normalize(pathToFile) : path.join(cwd(), pathToFile);
+    const targetPath = normalizePath(pathToFile);
 
     const content = await readFile(targetPath, { encoding: 'utf-8' });
     const hashSum = createHash('sha256').update(content, "utf-8");
