@@ -30,7 +30,7 @@ const main = async (args) => {
       rl.prompt();
     })
     .on("SIGINT", () => {
-      console.log(`Thank you for using File Manager, ${username}, goodbye!\n\n`);
+      console.log(`Thank you for using File Manager, ${username}, goodbye!`);
       process.exit(0);
     })
 }
