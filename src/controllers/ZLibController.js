@@ -1,6 +1,6 @@
 import path from "node:path";
 import { pipeline } from "node:stream/promises"
-import { createReadStream, createWriteStream } from "node:fs";
+import { createReadStream, createWriteStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createBrotliCompress, createBrotliDecompress } from "node:zlib"
 
@@ -20,6 +20,10 @@ class ZLibController {
     const targetPath = normalizePath(pathToTarget);
     let destinationPath = normalizePath(pathToDestination);
 
+    if (!existsSync(targetPath)) {
+      throw new Error('No such target file');
+    }
+
     let isDirectory = false;
     try {
       isDirectory = (await stat(destinationPath)).isDirectory();
@@ -31,6 +35,10 @@ class ZLibController {
       destinationPath = path.join(destinationPath, filename + ".br");
     } else {
       destinationPath += ".br";
+    }
+
+    if (existsSync(destinationPath)) {
+      throw new Error('File already exist');
     }
 
     await pipeline(createReadStream(targetPath),
@@ -45,6 +53,10 @@ class ZLibController {
     const targetPath = normalizePath(pathToTarget);
     let destinationPath = normalizePath(pathToDestination);
 
+    if (!existsSync(targetPath)) {
+      throw new Error('No such target file');
+    }
+
     let isDirectory = false;
     try {
       isDirectory = (await stat(destinationPath)).isDirectory();
@@ -54,6 +66,10 @@ class ZLibController {
     if (isDirectory) {
       const { name } = path.parse(targetPath);
       destinationPath = path.join(destinationPath, name);
+    }
+
+    if (existsSync(destinationPath)) {
+      throw new Error('File already exist');
     }
 
     await pipeline(createReadStream(targetPath),
