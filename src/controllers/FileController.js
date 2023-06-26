@@ -22,88 +22,88 @@ class FileController {
   }
 
   #readFile = async (pathToTarget) => {
-    pathToTarget = normalizePath(pathToTarget);
-    const data = await readFile(pathToTarget, { encoding: "utf-8" });
+    const target = normalizePath(pathToTarget);
+    const data = await readFile(target, { encoding: "utf-8" });
     return data;
   }
 
   #createFile = async (fileName, data) => {
-    filePath = path.join(cwd(), fileName);
+    const filePath = path.join(cwd(), fileName);
 
     if (existsSync(filePath)) {
       throw new Error("File already exist");
     }
 
-    writeFile(filePath, data);
+    await writeFile(filePath, data);
   }
 
   #createEmptyFile = async (fileName) => {
-    this.#createFile(fileName, '');
+    await this.#createFile(fileName, '');
   }
 
   #renameFile = async (pathToFile, newFileName) => {
-    pathToFile = normalizePath(pathToFile);
-    const { dir } = path.parse(pathToFile);
+    const target = normalizePath(pathToFile);
+    const { dir } = path.parse(target);
 
-    newFileName = path.join(dir, newFileName);
+    const destination = path.join(dir, newFileName);
 
-    if (!existsSync(pathToFile)) {
+    if (!existsSync(target)) {
       throw new Error("File doesn't exist");
     }
 
-    if (existsSync(newFileName)) {
+    if (existsSync(destination)) {
       throw new Error("File already exist");
     }
 
-    await rename(pathToFile, newFileName);
+    await rename(target, destination);
   }
 
   #copyFile = async (pathToTarget, pathToDestination) => {
-    pathToTarget = normalizePath(pathToTarget);
-    pathToDestination = normalizePath(pathToDestination);
+    const target = normalizePath(pathToTarget);
+    const destination = normalizePath(pathToDestination);
 
-    if (!existsSync(pathToTarget)) {
+    if (!existsSync(target)) {
       throw new Error("File doesn't exist");
     }
 
-    if (existsSync(pathToDestination)) {
+    if (existsSync(destination)) {
       throw new Error("File already exist");
     }
 
     await pipeline(
-      createReadStream(pathToTarget),
-      createWriteStream(pathToDestination)
+      createReadStream(target),
+      createWriteStream(destination)
     )
   }
 
   #moveFile = async (pathToTarget, pathToDestination) => {
-    pathToTarget = normalizePath(pathToTarget);
-    const { base } = path.parse(pathToTarget);
-    pathToDestination = normalizePath(pathToDestination);
+    const target = normalizePath(pathToTarget);
+    const { base } = path.parse(target);
+    let destination = normalizePath(pathToDestination);
 
-    if (!existsSync(pathToTarget)) {
+    if (!existsSync(target)) {
       throw new Error("File doesn't exist");
     }
 
-    const isDir = (await stat(pathToDestination)).isDirectory();
+    const isDir = (await stat(destination)).isDirectory();
 
     if (!isDir) {
       throw new Error("Second argument should be path to a directory");
     }
 
-    pathToDestination = path.join(pathToDestination, base);
+    destination = path.join(destination, base);
 
-    if (existsSync(pathToDestination)) {
+    if (existsSync(destination)) {
       throw new Error("File already exist");
     }
 
-    await this.#copyFile(pathToTarget, pathToDestination);
-    await this.#removeFile(pathToTarget);
+    await this.#copyFile(target, destination);
+    await this.#removeFile(target);
   }
 
   #removeFile = async (pathToTarget) => {
-    pathToTarget = normalizePath(pathToTarget);
-    await rm(pathToTarget, { force: true });
+    target = normalizePath(pathToTarget);
+    await rm(target, { force: true });
   }
 
   canProcess(command) {
