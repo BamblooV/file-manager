@@ -34,16 +34,16 @@ class HashController {
         if (Array.isArray(data)) {
           console.table(data);
         } else if (typeof data === "string") {
-          console.log(data + "\n\n");
+          console.log(data);
         }
       } catch (error) {
-        console.log('Operation failed\n');
+        console.log('Operation failed:');
+        console.log(error.message)
       }
     } else {
-      console.log('Invalid input\n');
+      console.log('Invalid input');
     }
   }
-
 }
 
 export default HashController

@@ -56,10 +56,10 @@ class OSController {
         if (Array.isArray(data)) {
           console.table(data)
         } else {
-          console.log(data + '\n\n');
+          console.log(data);
         }
       } catch (error) {
-        console.log("Operation failed\n");
+        console.log("Operation failed");
       }
     }
   }
