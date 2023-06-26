@@ -24,6 +24,10 @@ class FileController {
   #readFile = async (pathToTarget) => {
     const target = normalizePath(pathToTarget);
 
+    if (!existsSync(target)) {
+      throw new Error("File doesn't exist");
+    }
+
     return new Promise((res, rej) => {
       const rs = createReadStream(target);
       const result = [];
