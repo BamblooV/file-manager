@@ -10,13 +10,13 @@ const main = async (args) => {
   let { username } = parseArgs(args);
 
   if (!username) {
-    username = "user";
+    username = "Anonymus";
   }
 
   const rl = readline.createInterface({ input, output, prompt: `\nYou are currently in ${os.homedir()}\n` });
   const manager = new ControllerManager(rl);
 
-  console.log(`Welcome to the File Manager, ${username}!\n\n`)
+  console.log(`\x1b[33m Welcome to the File Manager, ${username}! \x1b[0m`)
   rl.prompt();
 
   rl
