@@ -1,5 +1,5 @@
 import { createReadStream, createWriteStream, existsSync } from "node:fs";
-import { readFile, writeFile, rename, rm, stat } from "node:fs/promises"
+import { writeFile, rename, rm, stat } from "node:fs/promises"
 import path from "node:path"
 import { cwd } from "node:process";
 import { pipeline } from "node:stream/promises";
@@ -23,8 +23,15 @@ class FileController {
 
   #readFile = async (pathToTarget) => {
     const target = normalizePath(pathToTarget);
-    const data = await readFile(target, { encoding: "utf-8" });
-    return data;
+
+    return new Promise((res, rej) => {
+      const rs = createReadStream(target);
+      const result = [];
+      rs.on('data', (data) => {
+        result.push(data.toString());
+      })
+      rs.on('end', () => res(result.join('\n')));
+    })
   }
 
   #createFile = async (fileName, data) => {
