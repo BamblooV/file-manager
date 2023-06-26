@@ -45,7 +45,7 @@ class FileController {
     const target = normalizePath(pathToFile);
     const { dir } = path.parse(target);
 
-    const destination = path.join(dir, newFileName);
+    const destination = path.resolve(dir, newFileName);
 
     if (!existsSync(target)) {
       throw new Error("File doesn't exist");
@@ -59,24 +59,6 @@ class FileController {
   }
 
   #copyFile = async (pathToTarget, pathToDestination) => {
-    const target = normalizePath(pathToTarget);
-    const destination = normalizePath(pathToDestination);
-
-    if (!existsSync(target)) {
-      throw new Error("File doesn't exist");
-    }
-
-    if (existsSync(destination)) {
-      throw new Error("File already exist");
-    }
-
-    await pipeline(
-      createReadStream(target),
-      createWriteStream(destination)
-    )
-  }
-
-  #moveFile = async (pathToTarget, pathToDestination) => {
     const target = normalizePath(pathToTarget);
     const { base } = path.parse(target);
     let destination = normalizePath(pathToDestination);
@@ -97,12 +79,22 @@ class FileController {
       throw new Error("File already exist");
     }
 
+    await pipeline(
+      createReadStream(target),
+      createWriteStream(destination)
+    )
+  }
+
+  #moveFile = async (pathToTarget, pathToDestination) => {
+    const target = normalizePath(pathToTarget);
+    const destination = normalizePath(pathToDestination);
+
     await this.#copyFile(target, destination);
     await this.#removeFile(target);
   }
 
   #removeFile = async (pathToTarget) => {
-    target = normalizePath(pathToTarget);
+    const target = normalizePath(pathToTarget);
     await rm(target, { force: true });
   }
 

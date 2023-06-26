@@ -43,10 +43,15 @@ class OSController {
   }
 
   async processCommand(command, args) {
+    if (args.length === 0) {
+      console.log("Invalid input");
+      return;
+    }
+
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
       if (!this.#commands.hasOwnProperty(arg)) {
-        console.log("Invalid input \n");
+        console.log("Invalid input");
         return;
       }
 
