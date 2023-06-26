@@ -6,7 +6,7 @@ import { pipeline } from "node:stream/promises";
 
 import normalizePath from "../helpers/normalizePath.js";
 
-export class FileController {
+class FileController {
 
   #commands;
 
@@ -129,3 +129,5 @@ export class FileController {
     }
   }
 }
+
+export default FileController;

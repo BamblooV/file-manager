@@ -1,8 +1,8 @@
-import { FileController } from "./FileController.js";
+import FileController from "./FileController.js";
 import HashController from "./HashController.js";
 import NavigationController from "./NavigationController.js";
 import OSController from "./OSController.js";
-import { ZLibController } from "./ZLibController.js";
+import ZLibController from "./ZLibController.js";
 
 class ControllerManager {
 

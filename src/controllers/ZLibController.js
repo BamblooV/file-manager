@@ -6,7 +6,7 @@ import { createBrotliCompress, createBrotliDecompress } from "node:zlib"
 
 import normalizePath from "../helpers/normalizePath.js";
 
-export class ZLibController {
+class ZLibController {
   #commands;
 
   constructor() {
@@ -85,3 +85,5 @@ export class ZLibController {
     }
   }
 }
+
+export default ZLibController;
