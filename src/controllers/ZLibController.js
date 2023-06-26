@@ -1,9 +1,9 @@
 import path from "node:path";
 import { pipeline } from "node:stream/promises"
 import { createReadStream, createWriteStream } from "node:fs";
-import { cwd } from 'node:process';
 import { stat } from "node:fs/promises";
 import { createBrotliCompress, createBrotliDecompress } from "node:zlib"
+
 import normalizePath from "../helpers/normalizePath.js";
 
 export class ZLibController {
@@ -60,7 +60,6 @@ export class ZLibController {
       createBrotliDecompress(),
       createWriteStream(destinationPath)
     );
-
   }
 
   canProcess(command) {
@@ -75,13 +74,14 @@ export class ZLibController {
         if (Array.isArray(data)) {
           console.table(data);
         } else if (typeof data === "string") {
-          console.log(data + "\n\n");
+          console.log(data);
         }
       } catch (error) {
-        console.log('Operation failed\n');
+        console.log('Operation failed:');
+        console.log(error.message)
       }
     } else {
-      console.log('Invalid input\n');
+      console.log('Invalid input');
     }
   }
 }
