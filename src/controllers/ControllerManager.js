@@ -76,14 +76,25 @@ class ControllerManager {
   async processCommand(consoleInput) {
     const [command, ...args] = this.#parseArgs(consoleInput);
 
+    let isProcessed = false;
+
     for (let i = 0; i < this.#controllers.length; i++) {
       const controller = this.#controllers[i];
 
       if (await controller.canProcess(command)) {
-        await controller.processCommand(command, args);
+        try {
+          await controller.processCommand(command, args);
+          isProcessed = true;
+        } catch (error) {
+          console.log("Operation failed");
+        }
         break;
       }
 
+    }
+
+    if (!isProcessed) {
+      console.log("Invalid input");
     }
   }
 }
